@@ -128,3 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 monitoring_system.py
+data/categories/dataset_5secondWindow_Bus.csv
+data/categories/dataset_5secondWindow_Car.csv
+data/categories/dataset_5secondWindow_Still.csv
+data/categories/dataset_5secondWindow_Train.csv
+data/categories/dataset_5secondWindow_Walking.csv
