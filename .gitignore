@@ -400,3 +400,4 @@ data/archive/dataset_5secondWindow%5B2%5D.csv
 data/archive/dataset_5secondWindow%5B3%5D.csv
 data/categories/.DS_Store
 .DS_Store
+all_users.py
