@@ -5,7 +5,13 @@
 Install my-project with npm
 
 ```bash 
- pip install streamlit
+pip install streamlit
+ 
+git clone https://github.com/ntc-google-fit/google_fit_project
+
+cd google_fit_project
+
+streamlit run app.py
 ```
 
 
