@@ -170,7 +170,7 @@ st.markdown("""---""")
 st.subheader("Upload your data")
 st.write(" ")
 
-# st.file_uploader('File uploader')
+st.file_uploader('File uploader')
 
 
 def file_selector(folder_path='./data'):
