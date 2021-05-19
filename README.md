@@ -1,5 +1,14 @@
 ## Google Fit Project
 
+## Installation 
+
+Install my-project with npm
+
+```bash 
+ pip install streamlit
+```
+
+
 Categories
 
 - car
