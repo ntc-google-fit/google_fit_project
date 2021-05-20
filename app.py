@@ -51,13 +51,8 @@ st.markdown(
 )
 
 
-# header=st.beta_container()
-# team=st.beta_container()
-# dataset=st.beta_container()
-# footer=st.beta_container()
-
-
 # Load Data
+
 @st.cache(allow_output_mutation=True)
 def load_data(filename=None):
     filename_default = './data/dataset_halfSecondWindow.csv'
@@ -82,6 +77,13 @@ df = load_data()
 # result = loaded_model.score(x_test, y_test)
 # st.write(result)
 
+
+# pickle v2
+# import pickle
+# pickle_out = open("classifier.pkl", mode = "wb")
+# pickle.dump(model, pickle_out)
+# pickle_out.close()
+
 ############
 
 
@@ -89,7 +91,7 @@ df = load_data()
 # st.set_option('deprecation.showPyplotGlobalUse', False)
 
 # site title
-st.title("Tracker App")
+st.title("Tracker App")  # site title h1
 st.subheader(
     "Strive School - Google Fit Project")
 st.text(" ")
@@ -102,17 +104,25 @@ st.text(" ")
 ########
 
 # input predictions for streamlit
-# gender = st.selectbox("Select your gender: ", options=['Male', 'Female'])
-# weight = st.slider("Enter your weight (kg): ", 1, 200, 1)
-# height = st.text_input('Enter heigth (m):')
-age = st.slider("Enter your age:", 1, 100, 1)
-# heart_rate = st.slider("Enter your heart rate (bpm): ", 1, 200, 1)
+gender = st.sidebar.selectbox(
+    "Select your gender: ", options=['Male', 'Female'])
+weight = st.sidebar.slider("Enter your weight (kg): ", 1, 200, 1)
+height = st.sidebar.text_input('Enter heigth (m):')
+age = st.sidebar.slider("Enter your age:", 1, 100, 1)
+heart_rate = st.sidebar.slider("Enter your heart rate (bpm): ", 1, 200, 1)
 
-st.write('Your age is: ', age)
+# gender = ()
+# if height != 0:
+#     st.write('Height: ', height)
+# st.write('Your age is: ', age)
+# st.write('Your age is: ', age)
+
 
 ########
 
 # st.markdown("""---""")
+
+# disply code
 
 # st.echo()
 # with st.echo():
@@ -120,7 +130,6 @@ st.write('Your age is: ', age)
 #     vehicle_dict = {'Car': 'Vehicle', 'Bus': 'Vehicle',
 #                     'Train': 'Vehicle', 'Walking': 'Walking'}
 #     dataset.replace({'target': vehicle_dict}, inplace=True)
-
 
 #######
 
@@ -214,18 +223,8 @@ y_test = test_df.target
 # load the model from disk
 filename = './data/final_model_v2.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
-result = (loaded_model.score(x_test, y_test) * 100)
+result = loaded_model.score(x_test, y_test)
 # st.write(result)
-
-
-##########
-
-# st.markdown("""---""")
-
-# st.subheader("Upload your data")
-# st.write(" ")
-
-# st.file_uploader('File uploader')
 
 
 #######
@@ -236,6 +235,138 @@ st.write(" ")
 # if pred_button:
 #     st.checkbox(pred, value=True)
 
-if st.button('Check prediction'):
-    st.write('result: %s' % result, '%')
-    # st.write(result)
+# st.write('result: %s' % result, '%')
+
+# ####################################################
+# header = st.beta_container()
+# team = st.beta_container()
+# activities = st.beta_container()
+# github = st.beta_container()
+# footer = st.beta_container()
+# ####################################################
+
+
+def main():
+    menu = ["Home", "Data Analysis", "Predictions"]
+    choice = st.sidebar.selectbox("Menu", menu)
+    if choice == "Home":
+        # st.subheader("Home")
+        # to_do1 = st.checkbox("Web Scrapping ")
+        # to_do2 = st.checkbox("Data Analysis")
+        # to_do3 = st.checkbox("Data Prosessing")
+        # to_do4 = st.checkbox("Data Visualization")
+        # to_do5 = st.checkbox("About Dumblodore Team")
+        # image = Image.open('imgs/dumbledore-on-strive.jpeg')
+        # st.image(image, caption='Dumbledore')
+
+        ###################################################
+        header = st.beta_container()
+        team = st.beta_container()
+        github = st.beta_container()
+        ###################################################
+        with header:
+            # st.title('Track App')
+            st.markdown("""---""")
+            st.subheader('Machine Learning Project')
+            st.text(' ')
+            # image = Image.open('./data/cardiacmonitor.png')
+            # st.image(image, caption="")
+
+            with team:
+                # meet the team button
+                st.sidebar.subheader('NTC Team')
+
+                st.sidebar.markdown(
+                    '[Fabio Fistarol](https://github.com/fistadev)')
+                st.sidebar.markdown(
+                    '[Deniz Elci](https://github.com/deniz-shelby)')
+                st.sidebar.markdown(
+                    '[Farrukh Bulbulov](https://github.com/fbulbulov)')
+                st.sidebar.markdown(
+                    '[Vladimir Gasanov](https://github.com/VladimirGas)')
+
+                st.sidebar.text(' ')
+                st.sidebar.text(' ')
+
+        with github:
+            # github section:
+            st.subheader('GitHub / Instructions')
+            st.markdown(
+                'Check the instruction [here](https://ntc-google-fit.github.io/)')
+            st.text(' ')
+
+
+##########################################################################
+    elif choice == "Data Analysis":
+        dataset = st.beta_container()
+
+        with dataset:
+            st.title("Data Analysis")
+
+            #### Data Correlation ####
+            st.set_option('deprecation.showPyplotGlobalUse', False)
+
+            st.text('Data Correlation ')
+            sns.set(style="white")
+            plt.rcParams['figure.figsize'] = (15, 10)
+            sns.heatmap(df.corr(), annot=True, linewidths=.5, cmap="Blues")
+            plt.title('Correlation Between Variables', fontsize=30)
+            plt.show()
+            st.pyplot()
+
+            #### Box Plot #####
+            st.text('Outlier Detection ')
+            fig = plt.figure(figsize=(15, 10))
+            sns.boxplot(data=df)
+            st.pyplot(fig)
+            st.text(' ')
+
+    elif choice == "ML":
+        footer = st.beta_container()
+
+        with footer:
+            # Footer
+            st.markdown("""---""")
+            st.markdown("Tracking App - Machine Learning Project")
+            st.markdown("")
+            st.markdown(
+                "If you have any questions, checkout our [documentation](https://ntc-google-fit.github.io/)")
+            st.text(' ')
+
+        ############################################################################################################################
+    else:
+        st.header("Predictions")
+
+        def xgb_page_builder(data):
+            st.sidebar.header('Track')
+            st.sidebar.markdown('You can tune the parameters by siding')
+            st.sidebar.text_input("What's your age?")
+            cp = st.sidebar.slider(
+                'Select max_depth (default = 30)', 0, 1, 2)
+            thalach = st.sidebar.slider(
+                'Select learning rate (divided by 10) (default = 0.1)', min_value=50, max_value=300, value=None, step=5)
+            slope = st.sidebar.slider(
+                'Select min_child_weight (default = 0.3)', 1, 2, 3)
+
+        if st.button('Check prediction'):
+            with st.spinner("Processing data..."):
+                # st.balloons()
+                st.write('result: %s' % result)
+                st.write(round(result, 2) * 100, '%')
+
+            st.markdown("20 rows sample:")
+            st.dataframe(df.head(20))
+
+        # set_config(display='diagram')
+
+        ##########
+
+        # st.markdown("""---""")
+
+        # st.subheader("Upload your data")
+        # st.write(" ")
+
+        # st.file_uploader('File uploader')
+
+
+main()
