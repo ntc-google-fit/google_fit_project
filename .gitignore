@@ -402,3 +402,9 @@ data/categories/.DS_Store
 .DS_Store
 all_users.py
 streamlit_ideas.py
+catboost_info/catboost_training.json
+catboost_info/learn/events.out.tfevents
+catboost_info/learn_error.tsv
+catboost_info/time_left.tsv
+titties_dont_open.ipynb
+titties_final.ipynb
