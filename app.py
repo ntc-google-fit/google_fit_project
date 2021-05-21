@@ -134,8 +134,32 @@ st.sidebar.image(image, caption='')
 
 #######
 
+# model final_final
 # Clean column names
-df.columns = df.columns.str.replace('android.sensor.','').str.replace('#','_')
+# df.columns = df.columns.str.replace(
+#     'android.sensor.', '').str.replace('#', '_')
+
+# # feature engineering
+# df['acc_mean*gyro_mean'] = df['accelerometer_mean'] * df['gyroscope_mean']
+# df['acc_mean*sound_mean'] = df['accelerometer_mean'] * df['sound_mean']
+
+# df['rv_gyro_mean'] = df['rotation_vector_mean'] * df['gyroscope_mean']
+# df['lin_speed_mean'] = df['linear_acceleration_mean'] * df['speed_mean']
+# df['rv_gyro_prox_mean'] = df['rotation_vector_mean'] * \
+#     df['gyroscope_mean'] * df['proximity_std']
+# df['lin_speed_prox_mean'] = df['linear_acceleration_mean'] * \
+#     df['speed_mean'] * df['proximity_std']
+# df['rv_gyro__grv_mean'] = df['rotation_vector_mean'] * \
+#     df['gyroscope_mean'] * df['game_rotation_vector_mean']
+
+# vehicle_dict = {'Car': 'Vehicle', 'Bus': 'Vehicle',
+#                 'Train': 'Vehicle', 'Still': 'Still', 'Walking': 'Walking'}
+# df.replace({'target': vehicle_dict}, inplace=True)
+
+# model v2
+# Clean column names
+df.columns = df.columns.str.replace(
+    'android.sensor.', '').str.replace('#', '_')
 
 # feature engineering
 df['acc_mean*gyro_mean'] = df['accelerometer_mean'] * df['gyroscope_mean']
@@ -143,20 +167,59 @@ df['acc_mean*sound_mean'] = df['accelerometer_mean'] * df['sound_mean']
 
 df['rv_gyro_mean'] = df['rotation_vector_mean'] * df['gyroscope_mean']
 df['lin_speed_mean'] = df['linear_acceleration_mean'] * df['speed_mean']
-df['rv_gyro_prox_mean'] = df['rotation_vector_mean'] * df['gyroscope_mean']* df['proximity_std']
-df['lin_speed_prox_mean'] = df['linear_acceleration_mean'] * df['speed_mean'] *df['proximity_std']
-df['rv_gyro__grv_mean'] = df['rotation_vector_mean'] * df['gyroscope_mean']* df['game_rotation_vector_mean']
+df['rv_gyro_prox_mean'] = df['rotation_vector_mean'] * \
+    df['gyroscope_mean'] * df['proximity_std']
+df['lin_speed_prox_mean'] = df['linear_acceleration_mean'] * \
+    df['speed_mean'] * df['proximity_std']
+df['rv_gyro__grv_mean'] = df['rotation_vector_mean'] * \
+    df['gyroscope_mean'] * df['game_rotation_vector_mean']
 
-vehicle_dict = {'Car':'Vehicle','Bus':'Vehicle','Train':'Vehicle','Still':'Still','Walking':'Walking'}
-df.replace({'target':vehicle_dict},inplace=True)
+vehicle_dict = {'Car': 'Vehicle', 'Bus': 'Vehicle',
+                'Train': 'Vehicle', 'Still': 'Still', 'Walking': 'Walking'}
+df.replace({'target': vehicle_dict}, inplace=True)
 
 ########
 
+# model final_final
+# df = df[['accelerometer_mean',
+#          'accelerometer_min',
+#          'accelerometer_max',
+#          'accelerometer_std',
+#          'linear_acceleration_mean', 'linear_acceleration_min', 'linear_acceleration_max', 'linear_acceleration_std',
+#          'orientation_mean',
+#          'orientation_min',
+#          'orientation_max',
+#          'orientation_std',
+#          'magnetic_field_mean',
+#          'magnetic_field_min',
+#          'magnetic_field_max',
+#          'magnetic_field_std',
+#          'gyroscope_mean',
+#          'gyroscope_min',
+#          'gyroscope_max',
+#          'gyroscope_std',
+#          'gravity_mean',
+#          'gravity_min',
+#          'gravity_max',
+#          'gravity_std',
+#          'acc_mean*gyro_mean',
+#          'acc_mean*sound_mean',
+#          'rv_gyro_prox_mean',
+#          'lin_speed_prox_mean',
+#          'rv_gyro__grv_mean',
+#          'rv_gyro_mean',
+#          'lin_speed_mean',
+
+#          'user',
+#          'target'
+#          ]]
+
+# model V2
 df = df[['accelerometer_mean',
          'accelerometer_min',
          'accelerometer_max',
          'accelerometer_std',
-         'linear_acceleration_mean','linear_acceleration_min','linear_acceleration_max','linear_acceleration_std',
+         'linear_acceleration_mean', 'linear_acceleration_min', 'linear_acceleration_max', 'linear_acceleration_std',
          'orientation_mean',
          'orientation_min',
          'orientation_max',
@@ -175,12 +238,7 @@ df = df[['accelerometer_mean',
          'gravity_std',
          'acc_mean*gyro_mean',
          'acc_mean*sound_mean',
-         'rv_gyro_prox_mean',
-         'lin_speed_prox_mean',
-         'rv_gyro__grv_mean',
-         'rv_gyro_mean',
-         'lin_speed_mean',
-         
+
          'user',
          'target'
          ]]
@@ -201,15 +259,26 @@ train_df.drop('user', axis=1, inplace=True)
 test_df.drop('user', axis=1, inplace=True)
 
 
+# model final_final
+# num_vars = [
+#     'accelerometer_mean', 'accelerometer_min', 'accelerometer_max', 'accelerometer_std',
+#     'linear_acceleration_mean', 'linear_acceleration_min', 'linear_acceleration_max', 'linear_acceleration_std',
+#     'magnetic_field_mean', 'magnetic_field_min', 'magnetic_field_max', 'magnetic_field_std',
+#     'gyroscope_mean', 'gyroscope_min', 'gyroscope_max', 'gyroscope_std',
+#     'orientation_mean', 'orientation_min', 'orientation_max', 'orientation_std',
+#     'gravity_mean', 'gravity_min', 'gravity_max', 'gravity_std',
+#     'acc_mean*gyro_mean', 'acc_mean*sound_mean', 'rv_gyro_prox_mean', 'lin_speed_prox_mean',
+#     'rv_gyro__grv_mean', 'rv_gyro_mean', 'lin_speed_mean']
+
+# model v2
 num_vars = [
-    'accelerometer_mean', 'accelerometer_min', 'accelerometer_max','accelerometer_std', 
-    'linear_acceleration_mean','linear_acceleration_min','linear_acceleration_max','linear_acceleration_std',
-    'magnetic_field_mean', 'magnetic_field_min','magnetic_field_max', 'magnetic_field_std', 
-    'gyroscope_mean','gyroscope_min', 'gyroscope_max', 'gyroscope_std', 
-    'orientation_mean','orientation_min', 'orientation_max', 'orientation_std', 
-    'gravity_mean','gravity_min', 'gravity_max', 'gravity_std', 
-    'acc_mean*gyro_mean','acc_mean*sound_mean','rv_gyro_prox_mean','lin_speed_prox_mean',
-    'rv_gyro__grv_mean','rv_gyro_mean','lin_speed_mean']
+    'accelerometer_mean', 'accelerometer_min', 'accelerometer_max', 'accelerometer_std',
+    'linear_acceleration_mean', 'linear_acceleration_min', 'linear_acceleration_max', 'linear_acceleration_std',
+    'magnetic_field_mean', 'magnetic_field_min', 'magnetic_field_max', 'magnetic_field_std',
+    'gyroscope_mean', 'gyroscope_min', 'gyroscope_max', 'gyroscope_std',
+    'orientation_mean', 'orientation_min', 'orientation_max', 'orientation_std',
+    'gravity_mean', 'gravity_min', 'gravity_max', 'gravity_std',
+    'acc_mean*gyro_mean', 'acc_mean*sound_mean']
 
 
 ########
@@ -258,30 +327,36 @@ def into_min(secs):
     return h, m, s
 
 
-
 def print_chunks(chunks):
     for chunk in chunks:
         if (chunk[0] == 'Vehicle'):
-            if chunk[2][0]>0:
-                print('You travelled by transport for {} hour, {} minutes and {} seconds'.format(chunk[2][0],chunk[2][1],chunk[2][2]))
+            if chunk[2][0] > 0:
+                print('You travelled by transport for {} hour, {} minutes and {} seconds'.format(
+                    chunk[2][0], chunk[2][1], chunk[2][2]))
             else:
-                print('You travelled by transport for {} minutes and {} seconds'.format(chunk[2][1],chunk[2][2]))
+                print('You travelled by transport for {} minutes and {} seconds'.format(
+                    chunk[2][1], chunk[2][2]))
         elif (chunk[0] == 'Walking'):
-            if chunk[2][0]>0:
-                print('You walked for {} hour, {} minutes and {} seconds'.format(chunk[2][0],chunk[2][1],chunk[2][2]))
+            if chunk[2][0] > 0:
+                print('You walked for {} hour, {} minutes and {} seconds'.format(
+                    chunk[2][0], chunk[2][1], chunk[2][2]))
             else:
-                print('You walked for {} minutes and {} seconds'.format(chunk[2][1],chunk[2][2]))
+                print('You walked for {} minutes and {} seconds'.format(
+                    chunk[2][1], chunk[2][2]))
         elif (chunk[0] == 'Still'):
-            if chunk[2][0]>0:
-                print('You rested for {} hour, {} minutes and {} seconds'.format(chunk[2][0],chunk[2][1],chunk[2][2]))
+            if chunk[2][0] > 0:
+                print('You rested for {} hour, {} minutes and {} seconds'.format(
+                    chunk[2][0], chunk[2][1], chunk[2][2]))
             else:
-                print('You rested for {} minutes and {} seconds'.format(chunk[2][1],chunk[2][2]))
+                print('You rested for {} minutes and {} seconds'.format(
+                    chunk[2][1], chunk[2][2]))
 
 ########
 
 
 # load the model from disk
-filename = './data/final_final_final.sav'
+# filename = './data/final_final_final.sav'
+filename = './data/final_model_v2.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 pred = loaded_model.predict(x_test)
 smoothed_pred = smoothen(pred, 100)
