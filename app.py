@@ -8,6 +8,8 @@ import plotly.express as px
 from PIL import Image
 import os
 import pickle
+import scipy
+import itertools
 
 from sklearn import set_config
 # accuracy_score, balanced_accuracy_score, plot_confusion_matrix
@@ -97,6 +99,8 @@ st.subheader(
 st.text(" ")
 st.text(" ")
 
+image = Image.open('imgs/ntc.jpeg')
+st.sidebar.image(image, caption='')
 
 ########
 
@@ -217,9 +221,10 @@ y_test = test_df.target
 
 ########
 
-def smoothen(preds,window):
-    most_freq_val = lambda x: [scipy.stats.mode(x)[0][0]] * len(x)
-    smoothed = [most_freq_val(preds[i:i + window]) for i in range(0, len(preds), window)]
+def smoothen(preds, window):
+    def most_freq_val(x): return [scipy.stats.mode(x)[0][0]] * len(x)
+    smoothed = [most_freq_val(preds[i:i + window])
+                for i in range(0, len(preds), window)]
     result = list(itertools.chain.from_iterable(smoothed))
     result = result[0:-100]
     result.extend(most_freq_val(result[-100:]))
@@ -227,27 +232,28 @@ def smoothen(preds,window):
     return result
 
 
- def chunks(array):
+def chunks(array):
     periods = []
     cntr = 1
-    
-    for i in range(0,len(array)-2):
+
+    for i in range(0, len(array)-2):
         if (array[i] == array[i+1]):
-            cntr+=1
+            cntr += 1
         else:
-            periods.append((array[i],cntr))
-            cntr=1
-    
-    periods.append((array[-1],cntr+1))
-    
-    final = [(item[0],item[1],into_min(item[1])) for item in periods]
-    
+            periods.append((array[i], cntr))
+            cntr = 1
+
+    periods.append((array[-1], cntr+1))
+
+    final = [(item[0], item[1], into_min(item[1])) for item in periods]
+
     return final
+
 
 def into_min(secs):
     m, s = divmod(secs, 60)
     h, m = divmod(m, 60)
-    return h,m,s
+    return h, m, s
 
 
 
@@ -276,8 +282,8 @@ def print_chunks(chunks):
 filename = './data/final_final_final.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 pred = loaded_model.predict(x_test)
-smoothed_pred = smoothen(pred,100)
-accuracy = metrics.accuracy_score(y_test, smoothed_pred)*100
+smoothed_pred = smoothen(pred, 100)
+accuracy = metrics.accuracy_score(y_test, smoothed_pred)
 chunks_output = chunks(smoothed_pred)
 
 #result = loaded_model.score(x_test, y_test)
@@ -313,8 +319,6 @@ def main():
         # to_do3 = st.checkbox("Data Prosessing")
         # to_do4 = st.checkbox("Data Visualization")
         # to_do5 = st.checkbox("About Dumblodore Team")
-        # image = Image.open('imgs/dumbledore-on-strive.jpeg')
-        # st.image(image, caption='Dumbledore')
 
         ###################################################
         header = st.beta_container()
@@ -451,12 +455,9 @@ def main():
         if st.button('Check prediction'):
             with st.spinner("Processing data..."):
                 # st.balloons()
-                st.write('result: %s' % result)
+                st.write('result: %s' % accuracy)
                 st.write(round(accuracy, 2) * 100, '%')
                 st.write(print_chunks(chunks_output))
-
-            st.markdown("20 rows sample:")
-            st.dataframe(df.head(20))
 
         set_config(display='diagram')
 
