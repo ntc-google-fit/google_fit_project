@@ -99,6 +99,8 @@ st.subheader(
 st.text(" ")
 st.text(" ")
 
+image = Image.open('imgs/ntc.jpeg')
+st.sidebar.image(image, caption='')
 
 ########
 
@@ -261,7 +263,7 @@ filename = './data/final_model_v2.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 pred = loaded_model.predict(x_test)
 smoothed_pred = smoothen(pred, 100)
-accuracy = metrics.accuracy_score(y_test, smoothed_pred)*100
+accuracy = metrics.accuracy_score(y_test, smoothed_pred)
 chunks_output = chunks(smoothed_pred)
 
 #result = loaded_model.score(x_test, y_test)
@@ -297,8 +299,6 @@ def main():
         # to_do3 = st.checkbox("Data Prosessing")
         # to_do4 = st.checkbox("Data Visualization")
         # to_do5 = st.checkbox("About Dumblodore Team")
-        # image = Image.open('imgs/dumbledore-on-strive.jpeg')
-        # st.image(image, caption='Dumbledore')
 
         ###################################################
         header = st.beta_container()
@@ -405,8 +405,6 @@ def main():
 
         st.file_uploader('File uploader')
 
-        # st.write(chunks_output)
-
     elif choice == "ML":
         footer = st.beta_container()
 
@@ -440,8 +438,6 @@ def main():
                 st.write('result: %s' % accuracy)
                 st.write(round(accuracy, 2) * 100, '%')
                 st.write(chunks_output)
-
-
 
         set_config(display='diagram')
 
