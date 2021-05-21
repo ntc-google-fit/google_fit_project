@@ -249,6 +249,26 @@ def into_min(secs):
     h, m = divmod(m, 60)
     return h,m,s
 
+
+
+def print_chunks(chunks):
+    for chunk in chunks:
+        if (chunk[0] == 'Vehicle'):
+            if chunk[2][0]>0:
+                print('You travelled by transport for {} hour, {} minutes and {} seconds'.format(chunk[2][0],chunk[2][1],chunk[2][2]))
+            else:
+                print('You travelled by transport for {} minutes and {} seconds'.format(chunk[2][1],chunk[2][2]))
+        elif (chunk[0] == 'Walking'):
+            if chunk[2][0]>0:
+                print('You walked for {} hour, {} minutes and {} seconds'.format(chunk[2][0],chunk[2][1],chunk[2][2]))
+            else:
+                print('You walked for {} minutes and {} seconds'.format(chunk[2][1],chunk[2][2]))
+        elif (chunk[0] == 'Still'):
+            if chunk[2][0]>0:
+                print('You rested for {} hour, {} minutes and {} seconds'.format(chunk[2][0],chunk[2][1],chunk[2][2]))
+            else:
+                print('You rested for {} minutes and {} seconds'.format(chunk[2][1],chunk[2][2]))
+
 ########
 
 
@@ -433,7 +453,7 @@ def main():
                 # st.balloons()
                 st.write('result: %s' % result)
                 st.write(round(accuracy, 2) * 100, '%')
-                st.write(chunks_output)
+                st.write(print_chunks(chunks_output))
 
             st.markdown("20 rows sample:")
             st.dataframe(df.head(20))
