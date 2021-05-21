@@ -462,13 +462,6 @@ def main():
             plt.show()
             st.pyplot()
 
-            #### Box Plot #####
-            # st.text('Outlier Detection ')
-            # fig = plt.figure(figsize=(15, 10))
-            # sns.boxplot(data=df)
-            # st.pyplot(fig)
-            # st.text(' ')
-
     elif choice == "Tests":
 
         # the input is the column for anroid.sensor.accelerometer#mean and if the target is walking
@@ -492,6 +485,25 @@ def main():
                 df1 = df['accelerometer_mean']  # but onyl for target walking
                 steps = step_counter_on_walking(df1)
                 st.write(steps, "steps")
+
+        st.subheader("Distance Covered")
+        if st.button('Distance in m'):
+            with st.spinner("Processing data..."):
+                # distance counter:
+                # def steps_to_meters(step_count):
+                #     meters = step_count * 0.762
+                #     return meters
+                # meters = steps_to_meters(steps)
+                # st.balloons()
+                df1 = df['accelerometer_mean']  # but onyl for target walking
+                steps = step_counter_on_walking(df1)
+                st.write(steps * 0.762, "meters")
+
+        st.subheader("Calories Burnt")
+        if st.button('Calories'):
+            with st.spinner("Processing data..."):
+                st.write("Your BMI")
+                # st.button('Calories')
 
         st.markdown("""---""")
         st.markdown(" ")
