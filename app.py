@@ -108,7 +108,7 @@ st.sidebar.image(image, caption='')
 
 
 def main():
-    menu = ["Home", "Data Analysis", "Predictions", "Tests", "Loading"]
+    menu = ["Home", "Predictions", "Tests", "Loading"]
     choice = st.sidebar.selectbox("Menu", menu)
     if choice == "Home":
 
@@ -177,22 +177,22 @@ def main():
             df2 = pd.read_csv(data_file)
             st.dataframe(df2)
 
-    elif choice == "Data Analysis":
-        dataset = st.beta_container()
+    # elif choice == "Data Analysis":
+    #     dataset = st.beta_container()
 
-        with dataset:
-            st.title("Data Analysis")
+    #     with dataset:
+    #         st.title("Data Analysis")
 
-            #### Data Correlation ####
-            st.set_option('deprecation.showPyplotGlobalUse', False)
+    #         #### Data Correlation ####
+    #         # st.set_option('deprecation.showPyplotGlobalUse', False)
 
-            st.text('Data Correlation ')
-            sns.set(style="white")
-            plt.rcParams['figure.figsize'] = (15, 10)
-            sns.heatmap(df.corr(), annot=True, linewidths=.5, cmap="Blues")
-            plt.title('Correlation Between Variables', fontsize=30)
-            plt.show()
-            st.pyplot()
+    #         st.text('Data Correlation ')
+    #         sns.set(style="white")
+    #         plt.rcParams['figure.figsize'] = (15, 10)
+    #         sns.heatmap(df.corr(), annot=True, linewidths=.5, cmap="Blues")
+    #         plt.title('Correlation Between Variables', fontsize=30)
+    #         plt.show()
+    #         st.pyplot()
 
     elif choice == "Tests":
 
@@ -208,10 +208,10 @@ def main():
                 # distance counter:
                 st.write(steps * 0.762, "meters")
 
-        st.subheader("Calories Burnt")
-        if st.button('Calories'):
-            with st.spinner("Processing data..."):
-                st.write("Your BMI")
+        # st.subheader("Calories Burnt")
+        # if st.button('Calories'):
+        #     with st.spinner("Processing data..."):
+        #         st.write("Your BMI")
                 # st.button('Calories')
 
         # Uploading the data
