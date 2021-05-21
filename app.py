@@ -72,7 +72,6 @@ chunks_output = prepro.chunks(smooth_pred)
 output = prepro.print_chunks(chunks_output)
 
 
-
 ################ Counting steps ################################
 
 def step_counter_on_walking(accelerometer_mean_list_for_walking):
@@ -87,6 +86,7 @@ def step_counter_on_walking(accelerometer_mean_list_for_walking):
                 step_counter += 1
     return step_counter
 
+
 step_df = x_test.copy()
 step_df['target'] = y_test
 step_df = step_df[step_df.target == 'Walking']
@@ -97,35 +97,20 @@ steps = step_counter_on_walking(step_data)
 ################################################################
 
 
-
-
 # site title
-st.title("Tracker App")  # site title h1
+st.title("Trackts App")  # site title h1
 st.subheader(
     "Strive School - Google Fit Project")
-st.text(" ")
-st.text(" ")
+st.markdown("""---""")
 
-image = Image.open('imgs/ntc.jpeg')
+image = Image.open('imgs/logo_trackts.png')
 st.sidebar.image(image, caption='')
-
-
-
-
-
-
 
 
 def main():
     menu = ["Home", "Data Analysis", "Predictions", "Tests"]
     choice = st.sidebar.selectbox("Menu", menu)
     if choice == "Home":
-        # st.subheader("Home")
-        # to_do1 = st.checkbox("Web Scrapping ")
-        # to_do2 = st.checkbox("Data Analysis")
-        # to_do3 = st.checkbox("Data Prosessing")
-        # to_do4 = st.checkbox("Data Visualization")
-        # to_do5 = st.checkbox("About Dumblodore Team")
 
         ###################################################
         header = st.beta_container()
@@ -134,13 +119,11 @@ def main():
         ###################################################
         with header:
             # st.title('Track App')
-            st.markdown("""---""")
-            st.subheader('Machine Learning Project')
+
+            st.subheader('Machine Learning / Feature Engineering Project')
             st.text(' ')
             image = Image.open('imgs/ai_2.jpg')
             st.image(image, caption='')
-
-            st.text("NTC Team")
             st.text(" ")
 
             st.markdown("""---""")
@@ -168,7 +151,14 @@ def main():
 
         with github:
             # github section:
+            st.text(' ')
+            st.text(' ')
+            st.text(' ')
+            st.text(' ')
+            st.text(' ')
+            st.text(' ')
             st.subheader('GitHub / Instructions')
+            st.text(' ')
             st.markdown(
                 'Check the instruction [here](https://ntc-google-fit.github.io/)')
             st.text(' ')
@@ -216,10 +206,10 @@ def main():
         st.markdown(" ")
         st.markdown(" ")
 
-        st.subheader("Upload your data")
-        st.write(" ")
-
-        st.file_uploader('File uploader')
+        # st.markdown("""---""")
+        # st.subheader("Upload your data")
+        # st.write(" ")
+        # st.file_uploader('File uploader')
 
     elif choice == "ML":
         footer = st.beta_container()
@@ -250,8 +240,6 @@ def main():
 
         if st.button('Check prediction'):
             with st.spinner("Processing data..."):
-                # st.balloons()
-                # st.write('result: %s' % accuracy)
                 st.write('Accuracy Score: ', round(accuracy, 2) * 100, '%')
                 st.markdown(" ")
                 st.write(output)
