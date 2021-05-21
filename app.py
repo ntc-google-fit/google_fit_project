@@ -405,6 +405,8 @@ def main():
 
         st.file_uploader('File uploader')
 
+        # st.write(chunks_output)
+
     elif choice == "ML":
         footer = st.beta_container()
 
@@ -435,12 +437,11 @@ def main():
         if st.button('Check prediction'):
             with st.spinner("Processing data..."):
                 # st.balloons()
-                st.write('result: %s' % result)
+                st.write('result: %s' % accuracy)
                 st.write(round(accuracy, 2) * 100, '%')
                 st.write(chunks_output)
 
-            st.markdown("20 rows sample:")
-            st.dataframe(df.head(20))
+
 
         set_config(display='diagram')
 
