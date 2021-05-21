@@ -8,6 +8,8 @@ import plotly.express as px
 from PIL import Image
 import os
 import pickle
+import scipy
+import itertools
 
 from sklearn import set_config
 # accuracy_score, balanced_accuracy_score, plot_confusion_matrix
@@ -217,9 +219,10 @@ y_test = test_df.target
 
 ########
 
-def smoothen(preds,window):
-    most_freq_val = lambda x: [scipy.stats.mode(x)[0][0]] * len(x)
-    smoothed = [most_freq_val(preds[i:i + window]) for i in range(0, len(preds), window)]
+def smoothen(preds, window):
+    def most_freq_val(x): return [scipy.stats.mode(x)[0][0]] * len(x)
+    smoothed = [most_freq_val(preds[i:i + window])
+                for i in range(0, len(preds), window)]
     result = list(itertools.chain.from_iterable(smoothed))
     result = result[0:-100]
     result.extend(most_freq_val(result[-100:]))
@@ -227,27 +230,28 @@ def smoothen(preds,window):
     return result
 
 
- def chunks(array):
+def chunks(array):
     periods = []
     cntr = 1
-    
-    for i in range(0,len(array)-2):
+
+    for i in range(0, len(array)-2):
         if (array[i] == array[i+1]):
-            cntr+=1
+            cntr += 1
         else:
-            periods.append((array[i],cntr))
-            cntr=1
-    
-    periods.append((array[-1],cntr+1))
-    
-    final = [(item[0],item[1],into_min(item[1])) for item in periods]
-    
+            periods.append((array[i], cntr))
+            cntr = 1
+
+    periods.append((array[-1], cntr+1))
+
+    final = [(item[0], item[1], into_min(item[1])) for item in periods]
+
     return final
+
 
 def into_min(secs):
     m, s = divmod(secs, 60)
     h, m = divmod(m, 60)
-    return h,m,s
+    return h, m, s
 
 ########
 
@@ -256,7 +260,7 @@ def into_min(secs):
 filename = './data/final_model_v2.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 pred = loaded_model.predict(x_test)
-smoothed_pred = smoothen(pred,100)
+smoothed_pred = smoothen(pred, 100)
 accuracy = metrics.accuracy_score(y_test, smoothed_pred)*100
 chunks_output = chunks(smoothed_pred)
 
