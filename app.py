@@ -108,7 +108,7 @@ st.sidebar.image(image, caption='')
 
 
 def main():
-    menu = ["Home", "Data Analysis", "Predictions", "Tests"]
+    menu = ["Home", "Data Analysis", "Predictions", "Tests", "Loading"]
     choice = st.sidebar.selectbox("Menu", menu)
     if choice == "Home":
 
@@ -131,7 +131,7 @@ def main():
             # display code
             st.echo()
             with st.echo():
-                print('Tracking App')
+                print('Trackts App')
 
             with team:
                 # meet the team button
@@ -165,6 +165,18 @@ def main():
 
 
 ##########################################################################
+    elif choice == "Loading":
+        st.subheader("Upload your data")
+        st.write(" ")
+
+        st.subheader("Dataset")
+
+        data_file = st.file_uploader("Upload CSV", type=["csv"])
+        if data_file is not None:
+            st.write(type(data_file))
+            df2 = pd.read_csv(data_file)
+            st.dataframe(df2)
+
     elif choice == "Data Analysis":
         dataset = st.beta_container()
 
@@ -202,14 +214,11 @@ def main():
                 st.write("Your BMI")
                 # st.button('Calories')
 
-        st.markdown("""---""")
-        st.markdown(" ")
-        st.markdown(" ")
+        # Uploading the data
 
         # st.markdown("""---""")
-        # st.subheader("Upload your data")
-        # st.write(" ")
-        # st.file_uploader('File uploader')
+        st.markdown(" ")
+        st.markdown(" ")
 
     elif choice == "ML":
         footer = st.beta_container()
