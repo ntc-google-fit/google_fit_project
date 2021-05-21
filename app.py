@@ -273,7 +273,7 @@ def print_chunks(chunks):
 
 
 # load the model from disk
-filename = './data/final_model_v2.sav'
+filename = './data/final_final_final.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 pred = loaded_model.predict(x_test)
 smoothed_pred = smoothen(pred,100)
