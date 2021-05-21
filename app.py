@@ -135,8 +135,7 @@ st.sidebar.image(image, caption='')
 #######
 
 # Clean column names
-df.columns = df.columns.str.replace(
-    'android.sensor.', '').str.replace('#', '_')
+df.columns = df.columns.str.replace('android.sensor.','').str.replace('#','_')
 
 # feature engineering
 df['acc_mean*gyro_mean'] = df['accelerometer_mean'] * df['gyroscope_mean']
@@ -144,16 +143,12 @@ df['acc_mean*sound_mean'] = df['accelerometer_mean'] * df['sound_mean']
 
 df['rv_gyro_mean'] = df['rotation_vector_mean'] * df['gyroscope_mean']
 df['lin_speed_mean'] = df['linear_acceleration_mean'] * df['speed_mean']
-df['rv_gyro_prox_mean'] = df['rotation_vector_mean'] * \
-    df['gyroscope_mean'] * df['proximity_std']
-df['lin_speed_prox_mean'] = df['linear_acceleration_mean'] * \
-    df['speed_mean'] * df['proximity_std']
-df['rv_gyro__grv_mean'] = df['rotation_vector_mean'] * \
-    df['gyroscope_mean'] * df['game_rotation_vector_mean']
+df['rv_gyro_prox_mean'] = df['rotation_vector_mean'] * df['gyroscope_mean']* df['proximity_std']
+df['lin_speed_prox_mean'] = df['linear_acceleration_mean'] * df['speed_mean'] *df['proximity_std']
+df['rv_gyro__grv_mean'] = df['rotation_vector_mean'] * df['gyroscope_mean']* df['game_rotation_vector_mean']
 
-vehicle_dict = {'Car': 'Vehicle', 'Bus': 'Vehicle',
-                'Train': 'Vehicle', 'Still': 'Still', 'Walking': 'Walking'}
-df.replace({'target': vehicle_dict}, inplace=True)
+vehicle_dict = {'Car':'Vehicle','Bus':'Vehicle','Train':'Vehicle','Still':'Still','Walking':'Walking'}
+df.replace({'target':vehicle_dict},inplace=True)
 
 ########
 
@@ -161,7 +156,7 @@ df = df[['accelerometer_mean',
          'accelerometer_min',
          'accelerometer_max',
          'accelerometer_std',
-         'linear_acceleration_mean', 'linear_acceleration_min', 'linear_acceleration_max', 'linear_acceleration_std',
+         'linear_acceleration_mean','linear_acceleration_min','linear_acceleration_max','linear_acceleration_std',
          'orientation_mean',
          'orientation_min',
          'orientation_max',
@@ -180,6 +175,12 @@ df = df[['accelerometer_mean',
          'gravity_std',
          'acc_mean*gyro_mean',
          'acc_mean*sound_mean',
+         'rv_gyro_prox_mean',
+         'lin_speed_prox_mean',
+         'rv_gyro__grv_mean',
+         'rv_gyro_mean',
+         'lin_speed_mean',
+         
          'user',
          'target'
          ]]
@@ -201,13 +202,14 @@ test_df.drop('user', axis=1, inplace=True)
 
 
 num_vars = [
-    'accelerometer_mean', 'accelerometer_min', 'accelerometer_max', 'accelerometer_std',
-    'linear_acceleration_mean', 'linear_acceleration_min', 'linear_acceleration_max', 'linear_acceleration_std',
-    'magnetic_field_mean', 'magnetic_field_min', 'magnetic_field_max', 'magnetic_field_std',
-    'gyroscope_mean', 'gyroscope_min', 'gyroscope_max', 'gyroscope_std',
-    'orientation_mean', 'orientation_min', 'orientation_max', 'orientation_std',
-    'gravity_mean', 'gravity_min', 'gravity_max', 'gravity_std',
-    'acc_mean*gyro_mean', 'acc_mean*sound_mean']
+    'accelerometer_mean', 'accelerometer_min', 'accelerometer_max','accelerometer_std', 
+    'linear_acceleration_mean','linear_acceleration_min','linear_acceleration_max','linear_acceleration_std',
+    'magnetic_field_mean', 'magnetic_field_min','magnetic_field_max', 'magnetic_field_std', 
+    'gyroscope_mean','gyroscope_min', 'gyroscope_max', 'gyroscope_std', 
+    'orientation_mean','orientation_min', 'orientation_max', 'orientation_std', 
+    'gravity_mean','gravity_min', 'gravity_max', 'gravity_std', 
+    'acc_mean*gyro_mean','acc_mean*sound_mean','rv_gyro_prox_mean','lin_speed_prox_mean',
+    'rv_gyro__grv_mean','rv_gyro_mean','lin_speed_mean']
 
 
 ########
