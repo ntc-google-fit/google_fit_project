@@ -104,12 +104,12 @@ st.text(" ")
 ########
 
 # input predictions for streamlit
-gender = st.sidebar.selectbox(
-    "Select your gender: ", options=['Male', 'Female'])
-weight = st.sidebar.slider("Enter your weight (kg): ", 1, 200, 1)
-height = st.sidebar.text_input('Enter heigth (m):')
-age = st.sidebar.slider("Enter your age:", 1, 100, 1)
-heart_rate = st.sidebar.slider("Enter your heart rate (bpm): ", 1, 200, 1)
+# gender = st.sidebar.selectbox(
+#     "Select your gender: ", options=['Male', 'Female'])
+# weight = st.sidebar.slider("Enter your weight (kg): ", 1, 200, 1)
+# height = st.sidebar.text_input('Enter heigth (m):')
+# age = st.sidebar.slider("Enter your age:", 1, 100, 1)
+# heart_rate = st.sidebar.slider("Enter your heart rate (bpm): ", 1, 200, 1)
 
 # gender = ()
 # if height != 0:
@@ -357,7 +357,28 @@ def main():
             st.markdown("20 rows sample:")
             st.dataframe(df.head(20))
 
-        # set_config(display='diagram')
+        # the input is the column for anroid.sensor.accelerometer#mean and if the target is walking
+        # as output i need this array for the step counter
+        def step_counter_on_walking(accelerometer_mean_list_for_walking):
+
+            step_counter = 0
+            for i in range(len(accelerometer_mean_list_for_walking)-1):
+                if i > 0:
+                    y = accelerometer_mean_list_for_walking[i]
+                    y_before = accelerometer_mean_list_for_walking[i-1]
+                    y_after = accelerometer_mean_list_for_walking[i+1]
+                    if (y > y_before) & (y > y_after) & (10 < (y_before+y_after)):
+                        step_counter += 1
+            return step_counter
+
+        st.markdown(" ")
+        st.markdown(" ")
+        st.markdown("Step Counter")
+        df1 = df['accelerometer_mean']  # but onyl for target walking
+        steps = step_counter_on_walking(df1)
+        st.write(steps, "steps")
+
+        set_config(display='diagram')
 
         ##########
 
