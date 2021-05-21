@@ -36,6 +36,13 @@ from lightgbm import LGBMClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 
 
+# set_config(display='diagram')
+# page config
+# set_config(display='diagram', layout="wide")
+st.set_page_config(page_title="Ex-stream-ly Cool App",
+                   layout="wide", initial_sidebar_state="expanded",)
+
+
 sns.set_style("whitegrid")
 
 # CSS
@@ -56,7 +63,6 @@ sns.set_style("whitegrid")
 # Load Data
 
 @st.cache(allow_output_mutation=True)
-
 
 ################ Get data  #####################################
 
@@ -85,6 +91,7 @@ print(output)
 
 
 
+
 # remove issues from plots
 # st.set_option('deprecation.showPyplotGlobalUse', False)
 
@@ -97,6 +104,7 @@ st.text(" ")
 
 image = Image.open('imgs/ntc.jpeg')
 st.sidebar.image(image, caption='')
+
 
 ########
 
@@ -128,9 +136,243 @@ st.sidebar.image(image, caption='')
 #                     'Train': 'Vehicle', 'Walking': 'Walking'}
 #     dataset.replace({'target': vehicle_dict}, inplace=True)
 
+
 #######
 
+# model final_final
 # Clean column names
+# df.columns = df.columns.str.replace(
+#     'android.sensor.', '').str.replace('#', '_')
+
+# # feature engineering
+# df['acc_mean*gyro_mean'] = df['accelerometer_mean'] * df['gyroscope_mean']
+# df['acc_mean*sound_mean'] = df['accelerometer_mean'] * df['sound_mean']
+
+# df['rv_gyro_mean'] = df['rotation_vector_mean'] * df['gyroscope_mean']
+# df['lin_speed_mean'] = df['linear_acceleration_mean'] * df['speed_mean']
+# df['rv_gyro_prox_mean'] = df['rotation_vector_mean'] * \
+#     df['gyroscope_mean'] * df['proximity_std']
+# df['lin_speed_prox_mean'] = df['linear_acceleration_mean'] * \
+#     df['speed_mean'] * df['proximity_std']
+# df['rv_gyro__grv_mean'] = df['rotation_vector_mean'] * \
+#     df['gyroscope_mean'] * df['game_rotation_vector_mean']
+
+# vehicle_dict = {'Car': 'Vehicle', 'Bus': 'Vehicle',
+#                 'Train': 'Vehicle', 'Still': 'Still', 'Walking': 'Walking'}
+# df.replace({'target': vehicle_dict}, inplace=True)
+
+# model v2
+# Clean column names
+<<<<<<< HEAD
+=======
+df.columns = df.columns.str.replace(
+    'android.sensor.', '').str.replace('#', '_')
+
+# feature engineering
+df['acc_mean*gyro_mean'] = df['accelerometer_mean'] * df['gyroscope_mean']
+df['acc_mean*sound_mean'] = df['accelerometer_mean'] * df['sound_mean']
+
+df['rv_gyro_mean'] = df['rotation_vector_mean'] * df['gyroscope_mean']
+df['lin_speed_mean'] = df['linear_acceleration_mean'] * df['speed_mean']
+df['rv_gyro_prox_mean'] = df['rotation_vector_mean'] * \
+    df['gyroscope_mean'] * df['proximity_std']
+df['lin_speed_prox_mean'] = df['linear_acceleration_mean'] * \
+    df['speed_mean'] * df['proximity_std']
+df['rv_gyro__grv_mean'] = df['rotation_vector_mean'] * \
+    df['gyroscope_mean'] * df['game_rotation_vector_mean']
+
+vehicle_dict = {'Car': 'Vehicle', 'Bus': 'Vehicle',
+                'Train': 'Vehicle', 'Still': 'Still', 'Walking': 'Walking'}
+df.replace({'target': vehicle_dict}, inplace=True)
+
+########
+
+# model final_final
+# df = df[['accelerometer_mean',
+#          'accelerometer_min',
+#          'accelerometer_max',
+#          'accelerometer_std',
+#          'linear_acceleration_mean', 'linear_acceleration_min', 'linear_acceleration_max', 'linear_acceleration_std',
+#          'orientation_mean',
+#          'orientation_min',
+#          'orientation_max',
+#          'orientation_std',
+#          'magnetic_field_mean',
+#          'magnetic_field_min',
+#          'magnetic_field_max',
+#          'magnetic_field_std',
+#          'gyroscope_mean',
+#          'gyroscope_min',
+#          'gyroscope_max',
+#          'gyroscope_std',
+#          'gravity_mean',
+#          'gravity_min',
+#          'gravity_max',
+#          'gravity_std',
+#          'acc_mean*gyro_mean',
+#          'acc_mean*sound_mean',
+#          'rv_gyro_prox_mean',
+#          'lin_speed_prox_mean',
+#          'rv_gyro__grv_mean',
+#          'rv_gyro_mean',
+#          'lin_speed_mean',
+
+#          'user',
+#          'target'
+#          ]]
+
+# model V2
+df = df[['accelerometer_mean',
+         'accelerometer_min',
+         'accelerometer_max',
+         'accelerometer_std',
+         'linear_acceleration_mean', 'linear_acceleration_min', 'linear_acceleration_max', 'linear_acceleration_std',
+         'orientation_mean',
+         'orientation_min',
+         'orientation_max',
+         'orientation_std',
+         'magnetic_field_mean',
+         'magnetic_field_min',
+         'magnetic_field_max',
+         'magnetic_field_std',
+         'gyroscope_mean',
+         'gyroscope_min',
+         'gyroscope_max',
+         'gyroscope_std',
+         'gravity_mean',
+         'gravity_min',
+         'gravity_max',
+         'gravity_std',
+         'acc_mean*gyro_mean',
+         'acc_mean*sound_mean',
+
+         'user',
+         'target'
+         ]]
+
+
+df.fillna(0, inplace=True)
+
+########
+
+# train test split
+big_users = ['U1', 'U3', 'U6', 'U7', 'U10', 'U12']
+
+train_df = df[df.user.isin(big_users)]
+test_df = df[~df.user.isin(big_users)]
+
+
+train_df.drop('user', axis=1, inplace=True)
+test_df.drop('user', axis=1, inplace=True)
+
+
+# model final_final
+# num_vars = [
+#     'accelerometer_mean', 'accelerometer_min', 'accelerometer_max', 'accelerometer_std',
+#     'linear_acceleration_mean', 'linear_acceleration_min', 'linear_acceleration_max', 'linear_acceleration_std',
+#     'magnetic_field_mean', 'magnetic_field_min', 'magnetic_field_max', 'magnetic_field_std',
+#     'gyroscope_mean', 'gyroscope_min', 'gyroscope_max', 'gyroscope_std',
+#     'orientation_mean', 'orientation_min', 'orientation_max', 'orientation_std',
+#     'gravity_mean', 'gravity_min', 'gravity_max', 'gravity_std',
+#     'acc_mean*gyro_mean', 'acc_mean*sound_mean', 'rv_gyro_prox_mean', 'lin_speed_prox_mean',
+#     'rv_gyro__grv_mean', 'rv_gyro_mean', 'lin_speed_mean']
+
+# model v2
+num_vars = [
+    'accelerometer_mean', 'accelerometer_min', 'accelerometer_max', 'accelerometer_std',
+    'linear_acceleration_mean', 'linear_acceleration_min', 'linear_acceleration_max', 'linear_acceleration_std',
+    'magnetic_field_mean', 'magnetic_field_min', 'magnetic_field_max', 'magnetic_field_std',
+    'gyroscope_mean', 'gyroscope_min', 'gyroscope_max', 'gyroscope_std',
+    'orientation_mean', 'orientation_min', 'orientation_max', 'orientation_std',
+    'gravity_mean', 'gravity_min', 'gravity_max', 'gravity_std',
+    'acc_mean*gyro_mean', 'acc_mean*sound_mean']
+
+
+########
+
+# split
+x_train = train_df[num_vars]
+x_test = test_df[num_vars]
+y_train = train_df.target
+y_test = test_df.target
+
+
+########
+
+def smoothen(preds, window):
+    def most_freq_val(x): return [scipy.stats.mode(x)[0][0]] * len(x)
+    smoothed = [most_freq_val(preds[i:i + window])
+                for i in range(0, len(preds), window)]
+    result = list(itertools.chain.from_iterable(smoothed))
+    result = result[0:-100]
+    result.extend(most_freq_val(result[-100:]))
+
+    return result
+
+
+def chunks(array):
+    periods = []
+    cntr = 1
+
+    for i in range(0, len(array)-2):
+        if (array[i] == array[i+1]):
+            cntr += 1
+        else:
+            periods.append((array[i], cntr))
+            cntr = 1
+
+    periods.append((array[-1], cntr+1))
+
+    final = [(item[0], item[1], into_min(item[1])) for item in periods]
+
+    return final
+
+
+def into_min(secs):
+    m, s = divmod(secs, 60)
+    h, m = divmod(m, 60)
+    return h, m, s
+
+
+def print_chunks(chunks):
+    for chunk in chunks:
+        if (chunk[0] == 'Vehicle'):
+            if chunk[2][0] > 0:
+                print('You travelled by transport for {} hour, {} minutes and {} seconds'.format(
+                    chunk[2][0], chunk[2][1], chunk[2][2]))
+            else:
+                print('You travelled by transport for {} minutes and {} seconds'.format(
+                    chunk[2][1], chunk[2][2]))
+        elif (chunk[0] == 'Walking'):
+            if chunk[2][0] > 0:
+                print('You walked for {} hour, {} minutes and {} seconds'.format(
+                    chunk[2][0], chunk[2][1], chunk[2][2]))
+            else:
+                print('You walked for {} minutes and {} seconds'.format(
+                    chunk[2][1], chunk[2][2]))
+        elif (chunk[0] == 'Still'):
+            if chunk[2][0] > 0:
+                print('You rested for {} hour, {} minutes and {} seconds'.format(
+                    chunk[2][0], chunk[2][1], chunk[2][2]))
+            else:
+                print('You rested for {} minutes and {} seconds'.format(
+                    chunk[2][1], chunk[2][2]))
+
+########
+
+
+# load the model from disk
+# filename = './data/final_final_final.sav'
+filename = './data/final_model_v2.sav'
+loaded_model = pickle.load(open(filename, 'rb'))
+pred = loaded_model.predict(x_test)
+smoothed_pred = smoothen(pred, 100)
+accuracy = metrics.accuracy_score(y_test, smoothed_pred)
+chunks_output = chunks(smoothed_pred)
+
+#result = loaded_model.score(x_test, y_test)
+# st.write(result)
+>>>>>>> ce239c008a7f4a9d3c1cfcb36baafe9bd67cc126
 
 
 #######
@@ -173,8 +415,8 @@ def main():
             st.markdown("""---""")
             st.subheader('Machine Learning Project')
             st.text(' ')
-            # image = Image.open('./data/cardiacmonitor.png')
-            # st.image(image, caption="")
+            image = Image.open('imgs/ai_2.jpg')
+            st.image(image, caption='')
 
             st.text("NTC Team")
             st.text(" ")
@@ -228,13 +470,6 @@ def main():
             plt.show()
             st.pyplot()
 
-            #### Box Plot #####
-            # st.text('Outlier Detection ')
-            # fig = plt.figure(figsize=(15, 10))
-            # sns.boxplot(data=df)
-            # st.pyplot(fig)
-            # st.text(' ')
-
     elif choice == "Tests":
 
         # the input is the column for anroid.sensor.accelerometer#mean and if the target is walking
@@ -258,6 +493,25 @@ def main():
                 df1 = df['accelerometer_mean']  # but onyl for target walking
                 steps = step_counter_on_walking(df1)
                 st.write(steps, "steps")
+
+        st.subheader("Distance Covered")
+        if st.button('Distance in m'):
+            with st.spinner("Processing data..."):
+                # distance counter:
+                # def steps_to_meters(step_count):
+                #     meters = step_count * 0.762
+                #     return meters
+                # meters = steps_to_meters(steps)
+                # st.balloons()
+                df1 = df['accelerometer_mean']  # but onyl for target walking
+                steps = step_counter_on_walking(df1)
+                st.write(steps * 0.762, "meters")
+
+        st.subheader("Calories Burnt")
+        if st.button('Calories'):
+            with st.spinner("Processing data..."):
+                st.write("Your BMI")
+                # st.button('Calories')
 
         st.markdown("""---""")
         st.markdown(" ")
@@ -301,8 +555,6 @@ def main():
                 st.write('result: %s' % accuracy)
                 st.write(round(accuracy, 2) * 100, '%')
                 st.write(print_chunks(chunks_output))
-
-        set_config(display='diagram')
 
         ##########
 
