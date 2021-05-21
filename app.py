@@ -108,7 +108,7 @@ st.sidebar.image(image, caption='')
 
 
 def main():
-    menu = ["Home", "Predictions", "Calculator", "Loading"]
+    menu = ["Home", "Predictions", "Calculator"]
     choice = st.sidebar.selectbox("Menu", menu)
     if choice == "Home":
 
@@ -165,17 +165,17 @@ def main():
 
 
 ##########################################################################
-    elif choice == "Loading":
-        st.subheader("Upload your data")
-        st.write(" ")
+    # elif choice == "Loading":
+    #     st.subheader("Upload your data")
+    #     st.write(" ")
 
-        st.subheader("Dataset")
+    #     st.subheader("Dataset")
 
-        data_file = st.file_uploader("Upload CSV", type=["csv"])
-        if data_file is not None:
-            st.write(type(data_file))
-            df2 = pd.read_csv(data_file)
-            st.dataframe(df2)
+    #     data_file = st.file_uploader("Upload CSV", type=["csv"])
+    #     if data_file is not None:
+    #         st.write(type(data_file))
+    #         df2 = pd.read_csv(data_file)
+    #         st.dataframe(df2)
 
     # elif choice == "Data Analysis":
     #     dataset = st.beta_container()
