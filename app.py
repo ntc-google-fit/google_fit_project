@@ -97,9 +97,6 @@ st.subheader(
 st.text(" ")
 st.text(" ")
 
-st.write("NTC Team")
-st.text(" ")
-
 
 ########
 
@@ -247,7 +244,7 @@ st.write(" ")
 
 
 def main():
-    menu = ["Home", "Data Analysis", "Predictions"]
+    menu = ["Home", "Data Analysis", "Predictions", "Tests"]
     choice = st.sidebar.selectbox("Menu", menu)
     if choice == "Home":
         # st.subheader("Home")
@@ -271,6 +268,16 @@ def main():
             st.text(' ')
             # image = Image.open('./data/cardiacmonitor.png')
             # st.image(image, caption="")
+
+            st.text("NTC Team")
+            st.text(" ")
+
+            st.markdown("""---""")
+
+            # display code
+            st.echo()
+            with st.echo():
+                print('Tracking App')
 
             with team:
                 # meet the team button
@@ -315,11 +322,44 @@ def main():
             st.pyplot()
 
             #### Box Plot #####
-            st.text('Outlier Detection ')
-            fig = plt.figure(figsize=(15, 10))
-            sns.boxplot(data=df)
-            st.pyplot(fig)
-            st.text(' ')
+            # st.text('Outlier Detection ')
+            # fig = plt.figure(figsize=(15, 10))
+            # sns.boxplot(data=df)
+            # st.pyplot(fig)
+            # st.text(' ')
+
+    elif choice == "Tests":
+
+        # the input is the column for anroid.sensor.accelerometer#mean and if the target is walking
+        # as output i need this array for the step counter
+        def step_counter_on_walking(accelerometer_mean_list_for_walking):
+
+            step_counter = 0
+            for i in range(len(accelerometer_mean_list_for_walking)-1):
+                if i > 0:
+                    y = accelerometer_mean_list_for_walking[i]
+                    y_before = accelerometer_mean_list_for_walking[i-1]
+                    y_after = accelerometer_mean_list_for_walking[i+1]
+                    if (y > y_before) & (y > y_after) & (10 < (y_before+y_after)):
+                        step_counter += 1
+            return step_counter
+
+        st.subheader("Step Counter")
+        if st.button('Amount of steps'):
+            with st.spinner("Processing data..."):
+                # st.balloons()
+                df1 = df['accelerometer_mean']  # but onyl for target walking
+                steps = step_counter_on_walking(df1)
+                st.write(steps, "steps")
+
+        st.markdown("""---""")
+        st.markdown(" ")
+        st.markdown(" ")
+
+        st.subheader("Upload your data")
+        st.write(" ")
+
+        st.file_uploader('File uploader')
 
     elif choice == "ML":
         footer = st.beta_container()
@@ -335,7 +375,7 @@ def main():
 
         ############################################################################################################################
     else:
-        st.header("Predictions")
+        st.subheader("Predictions")
 
         def xgb_page_builder(data):
             st.sidebar.header('Track')
@@ -356,27 +396,6 @@ def main():
 
             st.markdown("20 rows sample:")
             st.dataframe(df.head(20))
-
-        # the input is the column for anroid.sensor.accelerometer#mean and if the target is walking
-        # as output i need this array for the step counter
-        def step_counter_on_walking(accelerometer_mean_list_for_walking):
-
-            step_counter = 0
-            for i in range(len(accelerometer_mean_list_for_walking)-1):
-                if i > 0:
-                    y = accelerometer_mean_list_for_walking[i]
-                    y_before = accelerometer_mean_list_for_walking[i-1]
-                    y_after = accelerometer_mean_list_for_walking[i+1]
-                    if (y > y_before) & (y > y_after) & (10 < (y_before+y_after)):
-                        step_counter += 1
-            return step_counter
-
-        st.markdown(" ")
-        st.markdown(" ")
-        st.markdown("Step Counter")
-        df1 = df['accelerometer_mean']  # but onyl for target walking
-        steps = step_counter_on_walking(df1)
-        st.write(steps, "steps")
 
         set_config(display='diagram')
 
