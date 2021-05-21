@@ -334,7 +334,19 @@ def main():
         st.subheader("Upload your data")
         st.write(" ")
 
-        st.file_uploader('File uploader')
+        st.subheader("Dataset")
+        
+        data_file=st.file_uploader("Upload CSV",type=["csv"])
+        if data_file is not None:
+            st.write(type(data_file))
+            file_details={"filename":image_file.name, "filetype":image_file.type, "filesize":image_file.size}
+            st.write(file_details)
+            df2=pd.read_csv(data_file)
+            st.dataframe(df2)
+
+        #st.file_uploader("Upload CSV",type=["csv"])
+        #st.write(' ')
+
 
 
         st.subheader("Your Biometrics")
@@ -382,7 +394,7 @@ def main():
                 steps = step_counter_on_walking(df1)
                 dist =steps * 0.762
                 st.write(dist, "m")
-                #st.write(steps * 0.762, "m")
+                
         
         # Calories Burnt
         st.subheader("Calories Burnt:")
@@ -393,11 +405,12 @@ def main():
             result1=("Calories burnt: "+ str(calories_m))
         if gender == 'Female':
             result1=("Calories burnt: "+ str(calories_f))
-
         if st.button("Calories"):
             #result1=("Calories burnt: "+ str(calories))
             st.text(result1)
         
+
+
         # BMI
         st.subheader("BMI and Recommendations")
         bmi=weight/(height*height)
@@ -417,7 +430,7 @@ def main():
         
         else:
             if bmi > 35 :
-                st.warning("You are soo obese!!!")
+                st.warning("You are soo obese!")
                 if st.checkbox("Click here to know your eating habits."):
                         st.info("1) Include fruits and veggies on regular basis.")
                         st.info("2) Eat a whole source of protein with each meal – meat, chicken, fish, eggs, etc.")
@@ -425,8 +438,8 @@ def main():
                         st.info("4) Do free weight, compounds like Squats and Deadlifts instead. They trigger more strength and muscle gains to gain weight.")
         
             else :
-                st.success("You have an acceptable bmi")
-                if st.checkbox("Click here to know how to maintain a good bmi."):
+                st.success("You have an acceptable BMI")
+                if st.checkbox("Click here to know how to maintain a good BMI."):
                         st.info("1) Try to make physical activity a regular part of your day, just like brushing your teeth.")
                         st.info("2) Stay hydrated and eat balanced diet.")
                         st.info("3) Avoid random snacking.")
