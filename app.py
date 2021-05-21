@@ -108,7 +108,7 @@ st.sidebar.image(image, caption='')
 
 
 def main():
-    menu = ["Home", "Predictions", "Tests", "Loading"]
+    menu = ["Home", "Predictions", "Calculator", "Loading"]
     choice = st.sidebar.selectbox("Menu", menu)
     if choice == "Home":
 
@@ -194,7 +194,7 @@ def main():
     #         plt.show()
     #         st.pyplot()
 
-    elif choice == "Tests":
+    elif choice == "Calculator":
 
         st.subheader("Step Counter")
         if st.button('Amount of steps'):
