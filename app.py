@@ -37,9 +37,7 @@ from lightgbm import LGBMClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 
 
-# set_config(display='diagram')
 # page config
-# set_config(display='diagram', layout="wide")
 st.set_page_config(page_title="Ex-stream-ly Cool App",
                    layout="wide", initial_sidebar_state="expanded",)
 
@@ -48,22 +46,22 @@ sns.set_style("whitegrid")
 
 # CSS
 
-#st.markdown(
+# st.markdown(
 #    """
 #   <style>
 #     .main {
 #    background-color: #ffffff;
-#    
+#
 #     }
 #    </style>
 #    ,
 #    unsafe_allow_html=True
-#)
+# )
 
 
 # Load Data
 
-@st.cache(allow_output_mutation=True)
+# @st.cache(allow_output_mutation=True)
 
 ################ Get data  #####################################
 
@@ -71,7 +69,7 @@ df = prepro.load_data()
 x_train, x_test, y_train, y_test = prepro.preprocess(df)
 
 
-### Get model and predict
+# Get model and predict
 
 loaded_model = prepro.load_model()
 pred = loaded_model.predict(x_test)
@@ -84,7 +82,6 @@ accuracy = metrics.accuracy_score(y_test, smooth_pred)
 chunks_output = prepro.chunks(smooth_pred)
 output = prepro.print_chunks(chunks_output)
 
-print(output)
 
 ###############################################################
 
@@ -98,8 +95,6 @@ st.text(" ")
 
 image = Image.open('imgs/ntc.jpeg')
 st.sidebar.image(image, caption='')
-
-
 
 
 #######
@@ -216,7 +211,7 @@ def main():
         st.subheader("Step Counter")
         if st.button('Amount of steps'):
             with st.spinner("Processing data..."):
-                # st.balloons()
+                # Step Counter
                 df1 = df['accelerometer_mean']  # but onyl for target walking
                 steps = step_counter_on_walking(df1)
                 st.write(steps, "steps")
@@ -225,11 +220,6 @@ def main():
         if st.button('Distance in m'):
             with st.spinner("Processing data..."):
                 # distance counter:
-                # def steps_to_meters(step_count):
-                #     meters = step_count * 0.762
-                #     return meters
-                # meters = steps_to_meters(steps)
-                # st.balloons()
                 df1 = df['accelerometer_mean']  # but onyl for target walking
                 steps = step_counter_on_walking(df1)
                 st.write(steps * 0.762, "meters")
@@ -279,8 +269,9 @@ def main():
         if st.button('Check prediction'):
             with st.spinner("Processing data..."):
                 # st.balloons()
-                st.write('result: %s' % accuracy)
-                st.write(round(accuracy, 2) * 100, '%')
+                # st.write('result: %s' % accuracy)
+                st.write('Accuracy Score: ', round(accuracy, 2) * 100, '%')
+                st.markdown(" ")
                 st.write(output)
 
         ##########
