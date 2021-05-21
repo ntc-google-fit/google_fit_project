@@ -22,18 +22,7 @@ from sklearn import preprocessing  # OrdinalEncoder, LabelEncoder
 from sklearn import pipeline      # Pipeline
 from sklearn.impute import KNNImputer
 from sklearn.preprocessing import RobustScaler
-
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
-# Necesary for HistGradientBoostingClassifier
-from sklearn.experimental import enable_hist_gradient_boosting
-from sklearn.ensemble import HistGradientBoostingClassifier
-from xgboost import XGBClassifier
-from lightgbm import LGBMClassifier
-#from catboost import CatBoostClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 
 
@@ -83,7 +72,31 @@ chunks_output = prepro.chunks(smooth_pred)
 output = prepro.print_chunks(chunks_output)
 
 
-###############################################################
+
+################ Counting steps ################################
+
+def step_counter_on_walking(accelerometer_mean_list_for_walking):
+
+    step_counter = 0
+    for i in range(len(accelerometer_mean_list_for_walking)-1):
+        if i > 0:
+            y = accelerometer_mean_list_for_walking[i]
+            y_before = accelerometer_mean_list_for_walking[i-1]
+            y_after = accelerometer_mean_list_for_walking[i+1]
+            if (y > y_before) & (y > y_after) & (10 < (y_before+y_after)):
+                step_counter += 1
+    return step_counter
+
+step_df = x_test.copy()
+step_df['target'] = y_test
+step_df = step_df[step_df.target == 'Walking']
+step_data = step_df['accelerometer_mean'].values
+steps = step_counter_on_walking(step_data)
+
+
+################################################################
+
+
 
 
 # site title
@@ -97,23 +110,10 @@ image = Image.open('imgs/ntc.jpeg')
 st.sidebar.image(image, caption='')
 
 
-#######
 
-st.write(" ")
-st.write(" ")
-# pred_button = st.checkbox("Check prediction")
-# if pred_button:
-#     st.checkbox(pred, value=True)
 
-# st.write('result: %s' % result, '%')
 
-# ####################################################
-# header = st.beta_container()
-# team = st.beta_container()
-# activities = st.beta_container()
-# github = st.beta_container()
-# footer = st.beta_container()
-# ####################################################
+
 
 
 def main():
@@ -194,34 +194,16 @@ def main():
 
     elif choice == "Tests":
 
-        # the input is the column for anroid.sensor.accelerometer#mean and if the target is walking
-        # as output i need this array for the step counter
-        def step_counter_on_walking(accelerometer_mean_list_for_walking):
-
-            step_counter = 0
-            for i in range(len(accelerometer_mean_list_for_walking)-1):
-                if i > 0:
-                    y = accelerometer_mean_list_for_walking[i]
-                    y_before = accelerometer_mean_list_for_walking[i-1]
-                    y_after = accelerometer_mean_list_for_walking[i+1]
-                    if (y > y_before) & (y > y_after) & (10 < (y_before+y_after)):
-                        step_counter += 1
-            return step_counter
-
         st.subheader("Step Counter")
         if st.button('Amount of steps'):
             with st.spinner("Processing data..."):
                 # Step Counter
-                df1 = df['accelerometer_mean']  # but onyl for target walking
-                steps = step_counter_on_walking(df1)
                 st.write(steps, "steps")
 
         st.subheader("Distance Covered")
         if st.button('Distance in m'):
             with st.spinner("Processing data..."):
                 # distance counter:
-                df1 = df['accelerometer_mean']  # but onyl for target walking
-                steps = step_counter_on_walking(df1)
                 st.write(steps * 0.762, "meters")
 
         st.subheader("Calories Burnt")
