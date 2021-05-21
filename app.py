@@ -217,10 +217,50 @@ y_test = test_df.target
 
 ########
 
+def smoothen(preds,window):
+    most_freq_val = lambda x: [scipy.stats.mode(x)[0][0]] * len(x)
+    smoothed = [most_freq_val(preds[i:i + window]) for i in range(0, len(preds), window)]
+    result = list(itertools.chain.from_iterable(smoothed))
+    result = result[0:-100]
+    result.extend(most_freq_val(result[-100:]))
+
+    return result
+
+
+ def chunks(array):
+    periods = []
+    cntr = 1
+    
+    for i in range(0,len(array)-2):
+        if (array[i] == array[i+1]):
+            cntr+=1
+        else:
+            periods.append((array[i],cntr))
+            cntr=1
+    
+    periods.append((array[-1],cntr+1))
+    
+    final = [(item[0],item[1],into_min(item[1])) for item in periods]
+    
+    return final
+
+def into_min(secs):
+    m, s = divmod(secs, 60)
+    h, m = divmod(m, 60)
+    return h,m,s
+
+########
+
+
 # load the model from disk
 filename = './data/final_model_v2.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
-result = loaded_model.score(x_test, y_test)
+pred = loaded_model.predict(x_test)
+smoothed_pred = smoothen(pred,100)
+accuracy = metrics.accuracy_score(y_test, smoothed_pred)*100
+chunks_output = chunks(smoothed_pred)
+
+#result = loaded_model.score(x_test, y_test)
 # st.write(result)
 
 
@@ -392,7 +432,8 @@ def main():
             with st.spinner("Processing data..."):
                 # st.balloons()
                 st.write('result: %s' % result)
-                st.write(round(result, 2) * 100, '%')
+                st.write(round(accuracy, 2) * 100, '%')
+                st.write(chunks_output)
 
             st.markdown("20 rows sample:")
             st.dataframe(df.head(20))
