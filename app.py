@@ -554,7 +554,7 @@ def main():
                 # st.balloons()
                 st.write('result: %s' % accuracy)
                 st.write(round(accuracy, 2) * 100, '%')
-                st.write(print_chunks(chunks_output))
+                st.write(output)
 
         ##########
 
