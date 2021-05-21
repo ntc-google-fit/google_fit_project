@@ -37,6 +37,13 @@ from catboost import CatBoostClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 
 
+# set_config(display='diagram')
+# page config
+# set_config(display='diagram', layout="wide")
+st.set_page_config(page_title="Ex-stream-ly Cool App",
+                   layout="wide", initial_sidebar_state="expanded",)
+
+
 sns.set_style("whitegrid")
 
 # CSS
@@ -102,6 +109,7 @@ st.text(" ")
 image = Image.open('imgs/ntc.jpeg')
 st.sidebar.image(image, caption='')
 
+
 ########
 
 # input predictions for streamlit
@@ -131,6 +139,7 @@ st.sidebar.image(image, caption='')
 #     vehicle_dict = {'Car': 'Vehicle', 'Bus': 'Vehicle',
 #                     'Train': 'Vehicle', 'Walking': 'Walking'}
 #     dataset.replace({'target': vehicle_dict}, inplace=True)
+
 
 #######
 
@@ -407,8 +416,8 @@ def main():
             st.markdown("""---""")
             st.subheader('Machine Learning Project')
             st.text(' ')
-            # image = Image.open('./data/cardiacmonitor.png')
-            # st.image(image, caption="")
+            image = Image.open('imgs/ai_2.jpg')
+            st.image(image, caption='')
 
             st.text("NTC Team")
             st.text(" ")
@@ -547,8 +556,6 @@ def main():
                 st.write('result: %s' % accuracy)
                 st.write(round(accuracy, 2) * 100, '%')
                 st.write(print_chunks(chunks_output))
-
-        set_config(display='diagram')
 
         ##########
 
