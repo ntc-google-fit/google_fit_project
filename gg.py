@@ -341,9 +341,12 @@ def main():
         # input predictions for streamlit
         gender = st.selectbox( "Select your gender: ", options=['Male', 'Female'])
         weight = st.slider("Enter your weight (kg): ", 1, 200, 1)
-        height = st.text_input('Enter heigth (m):')
+        height = st.slider('Enter heigth (m):',0.0,2.3, 0.1 )
         age = st.slider("Enter your age:", 1, 100, 1)
         heart_rate = st.slider("Enter your heart rate (bpm): ", 1, 200, 1)
+        w_time = st.slider('Activity time (mins): ', 1, 300, 1)
+
+
 
 
         # the input is the column for anroid.sensor.accelerometer#mean and if the target is walking
@@ -370,44 +373,64 @@ def main():
                 st.write(steps, "steps")
      
         #distance counter:
-        def steps_to_meters(step_count):
-            meters = step_count * 0.762
-            return meters 
-        meters = steps_to_meters(steps)
-
-
+          
         st.subheader("Distance Covered")
         if st.button('Distance in m'):
             with st.spinner("Processing data..."):
                 # st.balloons()
-                #df1 = df['accelerometer_mean']  # but onyl for target walking
-                #steps = step_counter_on_walking(df1)
-                st.write(meters, "meters")
+                df1 = df['accelerometer_mean']  # but onyl for target walking
+                steps = step_counter_on_walking(df1)
+                dist =steps * 0.762
+                st.write(dist, "m")
+                #st.write(steps * 0.762, "m")
         
+        # Calories Burnt
+        st.subheader("Calories Burnt:")
+        calories_m = ((int(age) * 0.2017) + (int(weight) * 0.09036 * 2.20462) + (int(heart_rate) * 0.6309) - 55.0969) * int(w_time ) / 4.184
+        calories_f = ((int(age) * 0.074) + (int(weight) * 0.05741 * 2.20462) + (int(heart_rate) * 0.4472) - 20.4022) * int(w_time) / 4.184
 
-        st.subheader("Calories Burnt")
-        if st.button('Calories'):
-            
+        if gender == 'Male':
+            result1=("Calories burnt: "+ str(calories_m))
+        if gender == 'Female':
+            result1=("Calories burnt: "+ str(calories_f))
+
+        if st.button("Calories"):
+            #result1=("Calories burnt: "+ str(calories))
+            st.text(result1)
         
+        # BMI
+        st.subheader("BMI and Recommendations")
+        bmi=weight/(height*height)
+        if bmi==0.11:
+            st.text("      ")
+        if st.button("BMI"):
+            result=("Your BMI is "+ str(bmi))
+            st.text(result)
 
-        st.subheader("Your BMI")
-        st.button('Calories)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        if bmi < 14:
+            st.warning("You are soo thin!")
+            if st.checkbox("Click here to know important tips to gain weight."):
+                st.info("1) Eat more calories than your body burns.")
+                st.info("2) Increase your fibre intake.")
+                st.info("3) Eat Energy-Dense Foods and Use Sauces, Spices and Condiments.")
+                st.info("4) Eat plenty of proteins.")
+        
+        else:
+            if bmi > 35 :
+                st.warning("You are soo obese!!!")
+                if st.checkbox("Click here to know your eating habits."):
+                        st.info("1) Include fruits and veggies on regular basis.")
+                        st.info("2) Eat a whole source of protein with each meal – meat, chicken, fish, eggs, etc.")
+                        st.info("3) Make weight gainer shakes by mixing oats, milk, banana, peanut butter and whey protein in your blender.")
+                        st.info("4) Do free weight, compounds like Squats and Deadlifts instead. They trigger more strength and muscle gains to gain weight.")
+        
+            else :
+                st.success("You have an acceptable bmi")
+                if st.checkbox("Click here to know how to maintain a good bmi."):
+                        st.info("1) Try to make physical activity a regular part of your day, just like brushing your teeth.")
+                        st.info("2) Stay hydrated and eat balanced diet.")
+                        st.info("3) Avoid random snacking.")
+                        
     elif choice == "ML":
         footer = st.beta_container()
 
