@@ -131,7 +131,7 @@ def main():
             # display code
             st.echo()
             with st.echo():
-                print('Trackts App')
+                print('trackts app run')
 
             with team:
                 # meet the team button
@@ -235,6 +235,12 @@ def main():
         ############################################################################################################################
     else:
         st.subheader("Predictions")
+
+        image = Image.open('imgs/calculator.jpg')
+        st.image(image, caption='')
+
+        st.markdown(" ")
+        st.markdown(" ")
 
         def xgb_page_builder(data):
             st.sidebar.header('Track')
