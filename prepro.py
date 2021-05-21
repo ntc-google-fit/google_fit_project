@@ -2,9 +2,10 @@ import pandas as pd
 import pickle
 import scipy
 import itertools
-
+import streamlit as st
 
 ### Loading data ###
+
 
 def load_data(filename=None):
     filename_default = './data/dataset_halfSecondWindow.csv'
@@ -16,7 +17,7 @@ def load_data(filename=None):
 
 
 ### Preprocessing ###
-
+@st.cache(allow_output_mutation=True)
 def preprocess(df):
 
     df.columns = df.columns.str.replace(
