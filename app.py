@@ -4,7 +4,6 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 import seaborn as sns
-import plotly.express as px
 from PIL import Image
 import os
 import pickle
@@ -33,7 +32,7 @@ from sklearn.experimental import enable_hist_gradient_boosting
 from sklearn.ensemble import HistGradientBoostingClassifier
 from xgboost import XGBClassifier
 from lightgbm import LGBMClassifier
-from catboost import CatBoostClassifier
+#from catboost import CatBoostClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 
 
@@ -47,53 +46,50 @@ st.set_page_config(page_title="Ex-stream-ly Cool App",
 sns.set_style("whitegrid")
 
 # CSS
-st.markdown(
-    """
-    <style>
-     .main {
-    background-color: #ffffff;
-    
-     }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+
+#st.markdown(
+#    """
+#   <style>
+#     .main {
+#    background-color: #ffffff;
+#    
+#     }
+#    </style>
+#    ,
+#    unsafe_allow_html=True
+#)
 
 
 # Load Data
 
 @st.cache(allow_output_mutation=True)
-def load_data(filename=None):
-    filename_default = './data/dataset_halfSecondWindow.csv'
-    if not filename:
-        filename = filename_default
 
-    df = pd.read_csv(f"./{filename}")
-    return df
+################ Get data  #####################################
+
+df = prepro.load_data()
+x_train, x_test, y_train, y_test = prepro.preprocess(df)
 
 
-df = load_data()
+### Get model and predict
 
-###########
-# pickle
-
-# save the model to disk
-# filename = './data/final_model_v2.sav'
-# pickle.dump(model, open(filename, 'wb'))
-
-# # load the model from disk
-# loaded_model = pickle.load(open(filename, 'rb'))
-# result = loaded_model.score(x_test, y_test)
-# st.write(result)
+loaded_model = prepro.load_model()
+pred = loaded_model.predict(x_test)
 
 
-# pickle v2
-# import pickle
-# pickle_out = open("classifier.pkl", mode = "wb")
-# pickle.dump(model, pickle_out)
-# pickle_out.close()
+################ Postprocessing  ###############################
 
-############
+smooth_pred = prepro.smoothen(pred, 100)
+accuracy = metrics.accuracy_score(y_test, smooth_pred)
+chunks_output = prepro.chunks(smooth_pred)
+output = prepro.print_chunks(chunks_output)
+
+print(output)
+
+###############################################################
+
+
+
+
 
 
 # remove issues from plots
@@ -167,6 +163,8 @@ st.sidebar.image(image, caption='')
 
 # model v2
 # Clean column names
+<<<<<<< HEAD
+=======
 df.columns = df.columns.str.replace(
     'android.sensor.', '').str.replace('#', '_')
 
@@ -374,6 +372,7 @@ chunks_output = chunks(smoothed_pred)
 
 #result = loaded_model.score(x_test, y_test)
 # st.write(result)
+>>>>>>> ce239c008a7f4a9d3c1cfcb36baafe9bd67cc126
 
 
 #######
