@@ -35,6 +35,11 @@ from catboost import CatBoostClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 
 
+# page config
+st.set_page_config(page_title="Ex-stream-ly Cool App",
+                   layout="wide", initial_sidebar_state="expanded",)
+
+
 sns.set_style("whitegrid")
 
 # CSS
@@ -91,16 +96,18 @@ df = load_data()
 # st.set_option('deprecation.showPyplotGlobalUse', False)
 
 # site title
-st.title("Tracker App")  # site title h1
+st.title("Trackts App v1.2")  # site title h1
 st.subheader(
     "Strive School - Google Fit Project")
-st.text(" ")
-st.text(" ")
+st.markdown("""---""")
+
+image = Image.open('imgs/logo_trackts.png')
+st.sidebar.image(image, caption='')
 
 
 ########
 
-#input predictions for streamlit
+# input predictions for streamlit
 
 
 # gender = ()
@@ -239,7 +246,7 @@ st.write(" ")
 
 
 def main():
-    menu = ["Home", "Data Analysis", "Predictions", "Tests"]
+    menu = ["Home", "Predictions", "Calculator", 'Loading']
     choice = st.sidebar.selectbox("Menu", menu)
     if choice == "Home":
         # st.subheader("Home")
@@ -258,13 +265,13 @@ def main():
         ###################################################
         with header:
             # st.title('Track App')
-            st.markdown("""---""")
+
             st.subheader('Machine Learning Project')
             st.text(' ')
-            # image = Image.open('./data/cardiacmonitor.png')
-            # st.image(image, caption="")
+            image = Image.open('imgs/ai_2.jpg')
+            st.image(image, caption='')
 
-            st.text("NTC Team")
+            # st.text("NTC Team")
             st.text(" ")
 
             st.markdown("""---""")
@@ -299,22 +306,34 @@ def main():
 
 
 ##########################################################################
-    elif choice == "Data Analysis":
-        dataset = st.beta_container()
+    # Loading page
+    elif choice == "Loading":
+        st.subheader("Upload your data")
+        st.write(" ")
 
-        with dataset:
-            st.title("Data Analysis")
+        st.subheader("Dataset")
 
-            #### Data Correlation ####
-            st.set_option('deprecation.showPyplotGlobalUse', False)
+        data_file = st.file_uploader("Upload CSV", type=["csv"])
+        if data_file is not None:
+            st.write(type(data_file))
+            df2 = pd.read_csv(data_file)
+            st.dataframe(df2)
+    # elif choice == "Data Analysis":
+    #     dataset = st.beta_container()
 
-            st.text('Data Correlation ')
-            sns.set(style="white")
-            plt.rcParams['figure.figsize'] = (15, 10)
-            sns.heatmap(df.corr(), annot=True, linewidths=.5, cmap="Blues")
-            plt.title('Correlation Between Variables', fontsize=30)
-            plt.show()
-            st.pyplot()
+    #     with dataset:
+    #         st.title("Data Analysis")
+
+    #         #### Data Correlation ####
+    #         st.set_option('deprecation.showPyplotGlobalUse', False)
+
+    #         st.text('Data Correlation ')
+    #         sns.set(style="white")
+    #         plt.rcParams['figure.figsize'] = (15, 10)
+    #         sns.heatmap(df.corr(), annot=True, linewidths=.5, cmap="Blues")
+    #         plt.title('Correlation Between Variables', fontsize=30)
+    #         plt.show()
+    #         st.pyplot()
 
             #### Box Plot #####
             # st.text('Outlier Detection ')
@@ -323,47 +342,41 @@ def main():
             # st.pyplot(fig)
             # st.text(' ')
 
-    elif choice == "Tests":
-        
+    elif choice == "Calculator":
+
         # Uploading the data
 
-        st.markdown("""---""")
         st.markdown(" ")
         st.markdown(" ")
 
-        st.subheader("Upload your data")
-        st.write(" ")
+        # st.subheader("Upload your data")
+        # st.write(" ")
 
-        st.subheader("Dataset")
-        
-        data_file=st.file_uploader("Upload CSV",type=["csv"])
-        if data_file is not None:
-            st.write(type(data_file))
-            file_details={"filename":image_file.name, "filetype":image_file.type, "filesize":image_file.size}
-            st.write(file_details)
-            df2=pd.read_csv(data_file)
-            st.dataframe(df2)
+        # st.subheader("Dataset")
+
+        # data_file = st.file_uploader("Upload CSV", type=["csv"])
+        # if data_file is not None:
+        #     st.write(type(data_file))
+        #     df2 = pd.read_csv(data_file)
+        #     st.dataframe(df2)
 
         #st.file_uploader("Upload CSV",type=["csv"])
         #st.write(' ')
 
-
-
         st.subheader("Your Biometrics")
         # input predictions for streamlit
-        gender = st.selectbox( "Select your gender: ", options=['Male', 'Female'])
+        gender = st.selectbox("Select your gender: ",
+                              options=['Male', 'Female'])
         weight = st.slider("Enter your weight (kg): ", 1, 200, 1)
-        height = st.slider('Enter heigth (m):',0.0,2.3, 0.1 )
+        height = st.slider('Enter heigth (m):', 0.0, 2.3, 0.1)
         age = st.slider("Enter your age:", 1, 100, 1)
         heart_rate = st.slider("Enter your heart rate (bpm): ", 1, 200, 1)
         w_time = st.slider('Activity time (mins): ', 1, 300, 1)
 
-
-
-
         # the input is the column for anroid.sensor.accelerometer#mean and if the target is walking
         # as output i need this array for the step counter
-        #step counter:
+        # step counter:
+
         def step_counter_on_walking(accelerometer_mean_list_for_walking):
 
             step_counter = 0
@@ -375,49 +388,48 @@ def main():
                     if (y > y_before) & (y > y_after) & (10 < (y_before+y_after)):
                         step_counter += 1
             return step_counter
-        
-        st.subheader("Step Counter")
-        if st.button('Amount of steps'):
-            with st.spinner("Processing data..."):
-                # st.balloons()
-                df1 = df['accelerometer_mean']  # but onyl for target walking
-                steps = step_counter_on_walking(df1)
-                st.write(steps, "steps")
-     
-        #distance counter:
-          
-        st.subheader("Distance Covered")
-        if st.button('Distance in m'):
-            with st.spinner("Processing data..."):
-                # st.balloons()
-                df1 = df['accelerometer_mean']  # but onyl for target walking
-                steps = step_counter_on_walking(df1)
-                dist =steps * 0.762
-                st.write(dist, "m")
-                
-        
+
+        # st.subheader("Step Counter")
+        # if st.button('Amount of steps'):
+        #     with st.spinner("Processing data..."):
+        #         # st.balloons()
+        #         df1 = df['accelerometer_mean']  # but onyl for target walking
+        #         steps = step_counter_on_walking(df1)
+            # st.write(steps, "steps")
+
+        # distance counter:
+
+        # st.subheader("Distance Covered")
+        # if st.button('Distance in m'):
+        #     with st.spinner("Processing data..."):
+        #         # st.balloons()
+        #         df1 = df['accelerometer_mean']  # but onyl for target walking
+        #         steps = step_counter_on_walking(df1)
+        #         dist = steps * 0.762
+            # st.write(dist, "m")
+
         # Calories Burnt
         st.subheader("Calories Burnt:")
-        calories_m = ((int(age) * 0.2017) + (int(weight) * 0.09036 * 2.20462) + (int(heart_rate) * 0.6309) - 55.0969) * int(w_time ) / 4.184
-        calories_f = ((int(age) * 0.074) + (int(weight) * 0.05741 * 2.20462) + (int(heart_rate) * 0.4472) - 20.4022) * int(w_time) / 4.184
+        calories_m = ((int(age) * 0.2017) + (int(weight) * 0.09036 * 2.20462) +
+                      (int(heart_rate) * 0.6309) - 55.0969) * int(w_time) / 4.184
+        calories_f = ((int(age) * 0.074) + (int(weight) * 0.05741 * 2.20462) +
+                      (int(heart_rate) * 0.4472) - 20.4022) * int(w_time) / 4.184
 
         if gender == 'Male':
-            result1=("Calories burnt: "+ str(calories_m))
+            result1 = ("Calories burnt: " + str(calories_m))
         if gender == 'Female':
-            result1=("Calories burnt: "+ str(calories_f))
+            result1 = ("Calories burnt: " + str(calories_f))
         if st.button("Calories"):
             #result1=("Calories burnt: "+ str(calories))
             st.text(result1)
-        
-
 
         # BMI
         st.subheader("BMI and Recommendations")
-        bmi=weight/(height*height)
-        if bmi==0.11:
+        bmi = weight/(height*height)
+        if bmi == 0.11:
             st.text("      ")
         if st.button("BMI"):
-            result=("Your BMI is "+ str(bmi))
+            result = ("Your BMI is " + str(bmi))
             st.text(result)
 
         if bmi < 14:
@@ -425,25 +437,30 @@ def main():
             if st.checkbox("Click here to know important tips to gain weight."):
                 st.info("1) Eat more calories than your body burns.")
                 st.info("2) Increase your fibre intake.")
-                st.info("3) Eat Energy-Dense Foods and Use Sauces, Spices and Condiments.")
+                st.info(
+                    "3) Eat Energy-Dense Foods and Use Sauces, Spices and Condiments.")
                 st.info("4) Eat plenty of proteins.")
-        
+
         else:
-            if bmi > 35 :
+            if bmi > 35:
                 st.warning("You are soo obese!")
                 if st.checkbox("Click here to know your eating habits."):
-                        st.info("1) Include fruits and veggies on regular basis.")
-                        st.info("2) Eat a whole source of protein with each meal – meat, chicken, fish, eggs, etc.")
-                        st.info("3) Make weight gainer shakes by mixing oats, milk, banana, peanut butter and whey protein in your blender.")
-                        st.info("4) Do free weight, compounds like Squats and Deadlifts instead. They trigger more strength and muscle gains to gain weight.")
-        
-            else :
+                    st.info("1) Include fruits and veggies on regular basis.")
+                    st.info(
+                        "2) Eat a whole source of protein with each meal – meat, chicken, fish, eggs, etc.")
+                    st.info(
+                        "3) Make weight gainer shakes by mixing oats, milk, banana, peanut butter and whey protein in your blender.")
+                    st.info(
+                        "4) Do free weight, compounds like Squats and Deadlifts instead. They trigger more strength and muscle gains to gain weight.")
+
+            else:
                 st.success("You have an acceptable BMI")
                 if st.checkbox("Click here to know how to maintain a good BMI."):
-                        st.info("1) Try to make physical activity a regular part of your day, just like brushing your teeth.")
-                        st.info("2) Stay hydrated and eat balanced diet.")
-                        st.info("3) Avoid random snacking.")
-                        
+                    st.info(
+                        "1) Try to make physical activity a regular part of your day, just like brushing your teeth.")
+                    st.info("2) Stay hydrated and eat balanced diet.")
+                    st.info("3) Avoid random snacking.")
+
     elif choice == "ML":
         footer = st.beta_container()
 
@@ -459,6 +476,9 @@ def main():
         ############################################################################################################################
     else:
         st.subheader("Predictions")
+
+        image = Image.open('imgs/calculator.jpg')
+        st.image(image, caption='')
 
         def xgb_page_builder(data):
             st.sidebar.header('Track')
@@ -479,8 +499,6 @@ def main():
 
             st.markdown("20 rows sample:")
             st.dataframe(df.head(20))
-
-        set_config(display='diagram')
 
         ##########
 
